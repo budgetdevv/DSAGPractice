@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortingAlgorithmsPractice", "SortingAlgorithmsPractice.csproj", "{00904B5A-A503-4DBE-AC83-2897EC5D3627}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSAGPractice", "DSAGPractice.csproj", "{00904B5A-A503-4DBE-AC83-2897EC5D3627}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

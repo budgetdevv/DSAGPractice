@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace SortingAlgorithmsPractice
+namespace DSAGPractice
 {
     internal static class Program
     {
