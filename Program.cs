@@ -67,7 +67,10 @@ namespace SortingAlgorithmsPractice
                 output += $"{item}{SUFFIX}";
             }
 
-            output = output.AsSpan(0, output.Length - SUFFIX.Length).ToString();
+            if (output.Length != 0)
+            {
+                output = output.AsSpan(0, output.Length - SUFFIX.Length).ToString();
+            }
 
             Console.WriteLine($"[ {output} ]");
         }
