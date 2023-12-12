@@ -177,8 +177,6 @@ namespace SortingAlgorithmsPractice
                 }
                 
                 // Swap value of the lowest slot ( Unsorted partition ) with unsortedStartSlot
-
-                // Swap
                 (unsortedStartSlot, currentLowestSlot) = (currentLowestSlot, unsortedStartSlot);
 
                 indexOfUnsortedStart++;
