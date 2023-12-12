@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DSAGPractice
 {
@@ -39,6 +41,38 @@ namespace DSAGPractice
             SelectionSort(copy);
             
             copy.PrintArray();
+
+            const int searchValue = 5;
+            
+            arr = new int[] { 1, 2, searchValue, 6 };
+
+            var index = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine(index);
+            
+            arr = new int[] { searchValue, 6 };
+
+            index = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine(index);
+            
+            arr = new int[] { 1, 2, searchValue };
+
+            index = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine(index);
+            
+            arr = new int[] { 4 };
+
+            index = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine(index);
+
+            arr = Array.Empty<int>();
+
+            index = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine(index);
         }
         
         private static void ShuffleArray(int[] arr, Random random)
@@ -181,6 +215,79 @@ namespace DSAGPractice
 
                 indexOfUnsortedStart++;
             }
+        }
+
+        private static void AssertOrderedArray(int [] arr, string functionName)
+        {
+            var sorted = arr.OrderBy(x => x).ToArray();
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] != sorted[i])
+                {
+                    throw new Exception($"Unordered array passed into {functionName}");
+                }
+            }
+        }
+        
+        private static int BinarySearch(int[] arr, int value)
+        {
+            AssertOrderedArray(arr, nameof(BinarySearch));
+            
+            var partition = arr.AsSpan();
+
+            int partitionLength;
+            
+            // Handles arr.Length == 0
+            while ((partitionLength = partition.Length) > 2)
+            {
+                // Divide by 2 and round down ( C# division truncates decimal values, so it is considered rounding down
+                // for positive integers ).
+                var partitionMidpointIndex = partitionLength / 2;
+
+                var partitionMidpointValue = partition[partitionMidpointIndex];
+
+                if (value < partitionMidpointValue)
+                {
+                    partition = partition.Slice(0, partitionMidpointIndex);
+                }
+
+                else if (value > partitionMidpointValue)
+                {
+                    partition = partition.Slice(partitionMidpointIndex + 1);
+                }
+
+                else
+                {
+                    return partitionMidpointIndex;
+                }
+            }
+
+            // Okay hear me out - I'm using unsafe code just to find the index
+            // of the found element's slot. It is not an optimization..
+            ref var slot = ref Unsafe.NullRef<int>();
+
+            switch (partitionLength)
+            {
+                case 0:
+                    goto Fail;
+                case 1:
+                case 2:
+                    for (int i = 0; i < partitionLength; i++)
+                    {
+                        slot = ref partition[i];
+                        
+                        if (slot == value)
+                        {
+                            return (int) (Unsafe.ByteOffset(ref slot, ref MemoryMarshal.GetArrayDataReference(arr)) / sizeof(int));
+                        }
+                    }
+                    
+                    goto Fail;
+            }
+            
+            Fail:
+            return -1;
         }
     }
 }
