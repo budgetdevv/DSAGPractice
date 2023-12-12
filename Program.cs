@@ -46,33 +46,43 @@ namespace DSAGPractice
             
             arr = new int[] { 1, 2, searchValue, 6 };
 
-            var index = BinarySearch(arr, searchValue);
+            var index = BinarySearchNaive(arr, searchValue);
             
-            Console.WriteLine(index);
+            var index2 = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine($"{index} | {index2}");
             
             arr = new int[] { searchValue, 6 };
 
-            index = BinarySearch(arr, searchValue);
+            index = BinarySearchNaive(arr, searchValue);
             
-            Console.WriteLine(index);
+            index2 = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine($"{index} | {index2}");
             
             arr = new int[] { 1, 2, searchValue };
-
-            index = BinarySearch(arr, searchValue);
             
-            Console.WriteLine(index);
+            index = BinarySearchNaive(arr, searchValue);
+
+            index2 = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine($"{index} | {index2}");
             
             arr = new int[] { 4 };
-
-            index = BinarySearch(arr, searchValue);
             
-            Console.WriteLine(index);
+            index = BinarySearchNaive(arr, searchValue);
+
+            index2 = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine($"{index} | {index2}");
 
             arr = Array.Empty<int>();
-
-            index = BinarySearch(arr, searchValue);
             
-            Console.WriteLine(index);
+            index = BinarySearchNaive(arr, searchValue);
+
+            index2 = BinarySearch(arr, searchValue);
+            
+            Console.WriteLine($"{index} | {index2}");
         }
         
         private static void ShuffleArray(int[] arr, Random random)
@@ -230,9 +240,9 @@ namespace DSAGPractice
             }
         }
         
-        private static int BinarySearch(int[] arr, int value)
+        private static int BinarySearchNaive(int[] arr, int value)
         {
-            AssertOrderedArray(arr, nameof(BinarySearch));
+            AssertOrderedArray(arr, nameof(BinarySearchNaive));
             
             var partition = arr.AsSpan();
 
@@ -287,6 +297,42 @@ namespace DSAGPractice
             }
             
             Fail:
+            return -1;
+        }
+
+        private static int BinarySearch(int[] arr, int value)
+        {
+            AssertOrderedArray(arr, nameof(BinarySearch));
+
+            var firstElementIndex = 0;
+
+            var lastElementIndex = arr.Length - 1;
+
+            while (firstElementIndex <= lastElementIndex)
+            {
+                // [0, 1] Length: 2
+                var length = firstElementIndex - firstElementIndex + 1;
+
+                var midElementIndex = firstElementIndex + (length / 2);
+
+                var midElement = arr[midElementIndex];
+
+                if (value < midElement)
+                {
+                    lastElementIndex = midElementIndex - 1;
+                }
+                
+                else if (value > midElement)
+                {
+                    firstElementIndex = midElementIndex + 1;
+                }
+
+                else
+                {
+                    return midElementIndex;
+                }
+            }
+
             return -1;
         }
     }
