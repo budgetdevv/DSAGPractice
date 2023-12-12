@@ -148,7 +148,7 @@ namespace SortingAlgorithmsPractice
             var length = arr.Length;
 
             // When there is only a single element in "unsorted" partition, the whole array is sorted.
-            var threshold = length - 2;
+            var threshold = length - 1;
 
             int indexOfUnsortedStart = 0;
             
