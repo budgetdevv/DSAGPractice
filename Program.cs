@@ -311,7 +311,7 @@ namespace DSAGPractice
             while (firstElementIndex <= lastElementIndex)
             {
                 // [0, 1] Length: 2
-                var length = firstElementIndex - firstElementIndex + 1;
+                var length = lastElementIndex - firstElementIndex + 1;
 
                 var midElementIndex = firstElementIndex + (length / 2);
 
