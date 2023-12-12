@@ -7,7 +7,7 @@ namespace SortingAlgorithmsPractice
     {
         private static void Main(string[] args)
         {
-            const int SIZE = 10, SHUFFLE_COUNT = 10, HIGHEST_NUM = 1000;
+            const int SIZE = 20, HIGHEST_NUM = 1000;
             
             var random = new Random();
 
@@ -17,11 +17,8 @@ namespace SortingAlgorithmsPractice
             {
                 arr[i] = random.Next(0, HIGHEST_NUM + 1);
             }
-            
-            for (int i = 1; i <= SHUFFLE_COUNT; i++)
-            {
-                ShuffleArray(arr, random);
-            }
+
+            arr = arr.OrderDescending().ToArray();
 
             arr.PrintArray();
 
@@ -29,6 +26,18 @@ namespace SortingAlgorithmsPractice
             
             BubbleSort(copy);
 
+            copy.PrintArray();
+            
+            copy = arr.ToArray();
+            
+            InsertionSort(copy);
+            
+            copy.PrintArray();
+            
+            copy = arr.ToArray();
+
+            SelectionSort(copy);
+            
             copy.PrintArray();
         }
         
@@ -75,7 +84,8 @@ namespace SortingAlgorithmsPractice
                 {
                     var rightIndex = leftIndex + 1;
 
-                    if (rightIndex == remainingLength)
+                    // >=  handles arr.Length == 0
+                    if (rightIndex >= remainingLength)
                     {
                         break;
                     }
@@ -98,6 +108,77 @@ namespace SortingAlgorithmsPractice
                 {
                     return;
                 }
+            }
+        }
+
+        private static void InsertionSort(int[] arr)
+        {
+            var length = arr.Length;
+            
+            for (int rightIndex = 1; rightIndex < length; rightIndex++)
+            {
+                ref var currentRight = ref arr[rightIndex];
+
+                var currentRightVal = currentRight;
+                
+                for (int i = rightIndex - 1; i >= 0; i--)
+                {
+                    ref var currentLeft = ref arr[i];
+
+                    if (currentRightVal >= currentLeft)
+                    {
+                        break;
+                    }
+
+                    // Move value in left slot to right slot
+                    currentRight = currentLeft;
+
+                    // Current left slot now becomes right slot
+                    currentRight = ref currentLeft;
+                }
+                
+                // Unconditionally write value to right slot.
+                // This is because we avoid writing back currentRightVal until its appropriate position is found
+                currentRight = currentRightVal;
+            }
+        }
+
+        private static void SelectionSort(int[] arr)
+        {
+            var length = arr.Length;
+
+            // When there is only a single element in "unsorted" partition, the whole array is sorted.
+            var threshold = length - 2;
+
+            int indexOfUnsortedStart = 0;
+            
+            while (indexOfUnsortedStart < threshold)
+            {
+                ref var unsortedStartSlot = ref arr[indexOfUnsortedStart];
+
+                ref var currentLowestSlot = ref unsortedStartSlot;
+
+                var currentLowestValue = currentLowestSlot;
+                
+                for (int cursorIndex = indexOfUnsortedStart + 1; cursorIndex < length; cursorIndex++)
+                {
+                    ref var cursorSlot = ref arr[cursorIndex];
+
+                    var cursorValue = cursorSlot;
+                    
+                    if (cursorValue < currentLowestValue)
+                    {
+                        currentLowestValue = cursorValue;
+                        currentLowestSlot = ref cursorSlot;
+                    }
+                }
+                
+                // Swap value of the lowest slot ( Unsorted partition ) with unsortedStartSlot
+
+                // Swap
+                (unsortedStartSlot, currentLowestSlot) = (currentLowestSlot, unsortedStartSlot);
+
+                indexOfUnsortedStart++;
             }
         }
     }
